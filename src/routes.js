@@ -1,4 +1,5 @@
 const express = require('express');
+const bcrypt = require('bcrypt');
 const router = express.Router();
 const jwt = require('jsonwebtoken');
 const UserQueries = require('./queries/users');
@@ -29,18 +30,44 @@ const authenticate = (req, res, next) => {
 router.post('/login', async (req, res) => {
     try {
         const { username, password } = req.body;
-        const user = await UserQueries.getUserByUsernameAndPassword(username, password);
+        const user = await UserQueries.getUserByUsername(username);
         
         if(user === null){
-            res.sendStatus(401)
+            return res.sendStatus(401)
         }
+
+        const match = await bcrypt.compare(password, user.password);
+
+        if (!match) {
+            res.status(401).json({ message: "Username or Password wrong"});
+        }
+
         const token = generateAccessToken({ id: user.id });
         res.json({
             accessToken: token
         })
     } catch (err) {
         console.log(err)
-        res.sendStatus(500)
+    }
+})
+
+router.post('/sign_up', async (req, res) => {
+    try {
+        const { username, password } = req.body;
+        const hashedPassword = await bcrypt.hash(password, 10);
+        await UserQueries.addUser(username, hashedPassword);
+        res.sendStatus(201)
+    } catch (err) {
+        console.log(err)
+    }
+})
+
+router.get('/authenticated', authenticate, async (req, res) => {
+    try {
+        const result = await UserQueries.getUserDataByUserId(req.user.id)
+        res.json(result);
+    } catch (err) {
+        console.log(err)
     }
 })
 
