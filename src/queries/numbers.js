@@ -20,7 +20,7 @@ exports.getEntriesByUserId = async (user_id) => {
     try {
         return await DB.Numbers.findAll({
             where: { created_by: user_id },
-            order: ['id', 'DESC'],
+            order: [['id', 'desc']],
             raw: true
         })
     } catch (err) {
@@ -36,7 +36,7 @@ exports.getEntriesWithFilter = async (filter, condition, user_id) => {
                 times: { [filterCondition]: filter },
                 created_by: user_id
             },
-            order: ['id', 'DESC'],
+            order: [['id', 'desc']],
             raw: true
         })
     } catch (err) {
