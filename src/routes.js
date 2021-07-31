@@ -107,8 +107,8 @@ router.post('/summary', authenticate, async (req, res) => {
         const valueCounts = await NumbersQueries.getSummaryForFilter(filter, req.user.id);
         const result = {
             ...valueCounts,
-            in_amount: valueCounts.in_values * PRICE_PER_TIME,
-            out_amount: valueCounts.out_values * PRICE_PER_TIME,
+            in_amount: valueCounts.in_value * PRICE_PER_TIME,
+            out_amount: valueCounts.out_value * PRICE_PER_TIME,
         }
         res.json(result)
     } catch (err) {

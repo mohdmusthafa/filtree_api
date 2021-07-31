@@ -30,7 +30,7 @@ exports.getEntriesByUserId = async (user_id) => {
 
 exports.getEntriesWithFilter = async (filter, condition, user_id) => {
     try {
-        const filterCondition = condition === 'gt' ? Op.gt : Op.lt
+        const filterCondition = condition === 'gt' ? Op.gt : Op.lte
         return await DB.Numbers.findAll({
             where: {
                 times: { [filterCondition]: filter },
@@ -46,20 +46,20 @@ exports.getEntriesWithFilter = async (filter, condition, user_id) => {
 
 exports.getSummaryForFilter = async (filter, user_id) => {
     try {
-        const in_values = await DB.Numbers.count({
+        const in_value = await DB.Numbers.count({
             where: {
-                times: { [Op.lt]: filter }
+                times: { [Op.lte]: filter }
             }
         })
-        const out_values = await DB.Numbers.count({
+        const out_value = await DB.Numbers.count({
             where: {
                 times: { [Op.gt]: filter }
             }
         })
 
         return {
-            in_values,
-            out_values
+            in_value,
+            out_value
         }
     } catch (err) {
         console.log(err)
