@@ -1,0 +1,33 @@
+version: '3.8'
+services:
+    app:
+        image: absentauthor/filtree-api:latest
+        restart: always
+        ports:
+            - '3000:3000'
+        environment:
+            - PORT=3000
+            - HOST=0.0.0.0
+            - DB_HOST=db
+            - DB_PORT=3306
+            - DB_USERNAME=user
+            - DB_PASSWORD=password
+            - DB_NAME=filtree
+            - JWT_SECRET=secret
+        depends_on:
+            - db
+    db:
+        image: mysql:latest
+        restart: always
+        volumes:
+            - db-data:/var/lib/mysql
+        environment:
+            MYSQL_DATABASE: 'filtree'
+            MYSQL_USER: 'user'
+            MYSQL_PASSWORD: 'password'
+            MYSQL_ROOT_PASSWORD: 'password'
+        ports:
+            - '3306:3306'
+
+volumes:
+    db-data:

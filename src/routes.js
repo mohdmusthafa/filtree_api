@@ -5,8 +5,10 @@ const jwt = require('jsonwebtoken');
 const UserQueries = require('./queries/users');
 const NumbersQueries = require('./queries/numbers');
 
+const JWT_SECRET = process.env.JWT_SECRET || 'secret';
+
 const generateAccessToken = (payload) => {
-    return jwt.sign(payload, 'secret', { expiresIn: 18000 })
+    return jwt.sign(payload, JWT_SECRET, { expiresIn: 18000 })
 }
 
 const authenticate = (req, res, next) => {
@@ -15,7 +17,7 @@ const authenticate = (req, res, next) => {
 
     if (token == null) return res.sendStatus(401)
 
-    jwt.verify(token, 'secret', (err, user) => {
+    jwt.verify(token, JWT_SECRET, (err, user) => {
         if (err) {
             console.log(err)
             return res.sendStatus(403)
