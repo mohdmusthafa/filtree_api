@@ -17,6 +17,12 @@ DB.sequelize.sync()
 //Middlewares
 app.use(express.json())
 app.use("/api", routes);
-
+app.use((err, req, res, next) => {
+    const errorPayload = {
+        message: err.toString()
+    }
+    res.status(500).json(errorPayload)
+})
 app.listen(PORT, HOST);
+
 console.log(`Running on http://${HOST}:${PORT}`)

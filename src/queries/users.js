@@ -9,7 +9,7 @@ exports.getUserByUsername = async (username) => {
             raw: true
         })
     } catch (err) {
-        console.log(err)
+        throw err.message
     }
 }
 
@@ -19,7 +19,7 @@ exports.flushUserData = async (user_id) => {
             where: { created_by: user_id }
         })
     } catch (err) {
-        console.log(err)
+        throw err.message
     }
 }
 
@@ -30,7 +30,7 @@ exports.getUserDataByUserId = async (user_id) => {
             attributes: ['id', 'username']
         })
     } catch (err) {
-        console.log(err)
+        throw err.message
     }
 }
 
@@ -43,6 +43,6 @@ exports.addUser = async (username, hashedPassword) => {
 
         return await DB.Users.create(info)
     } catch (err) {
-        console.log(err)
+        throw err.message
     }
 }

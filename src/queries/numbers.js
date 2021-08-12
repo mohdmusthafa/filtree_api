@@ -12,7 +12,7 @@ exports.insertNumberEntry = async (number, times, created_by) => {
         await DB.Numbers.create(info)
         return
     } catch (err) {
-        console.log(err)
+        throw err.message
     }
 }
 
@@ -24,7 +24,7 @@ exports.getEntriesByUserId = async (user_id) => {
             raw: true
         })
     } catch (err) {
-        console.log(err)
+        throw err.message
     }
 }
 
@@ -40,7 +40,7 @@ exports.getEntriesWithFilter = async (filter, condition, user_id) => {
             raw: true
         })
     } catch (err) {
-        console.log(err)
+        throw err.message
     }
 }
 
@@ -62,6 +62,6 @@ exports.getSummaryForFilter = async (filter, user_id) => {
             out_value
         }
     } catch (err) {
-        console.log(err)
+        throw err.message
     }
 }
