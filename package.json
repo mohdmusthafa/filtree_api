@@ -5,7 +5,9 @@
   "license": "MIT",
   "scripts": {
     "start": "node app.js",
-    "dev": "node -r dotenv/config app.js"
+    "dev": "node -r dotenv/config app.js",
+    "build": "docker build -t absentauthor/filtree-api:latest .",
+    "build_mac": "docker buildx build --platform linux/amd64 -t absentauthor/filtree-api:latest ."
   },
   "dependencies": {
     "bcrypt": "^5.0.1",
