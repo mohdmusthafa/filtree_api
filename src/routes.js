@@ -53,23 +53,28 @@ router.post('/login', async (req, res, next) => {
     }
 })
 
-router.post('/sign_up', async (req, res) => {
+router.post('/sign_up', async (req, res, next) => {
     try {
         const { username, password } = req.body;
+        const user = await UserQueries.getUserByUsername(username);
+        
+        if (user) {
+            return res.status(400).json({ message: "User already exists"})
+        }
         const hashedPassword = await bcrypt.hash(password, 10);
         await UserQueries.addUser(username, hashedPassword);
         res.sendStatus(201)
     } catch (err) {
-        console.log(err)
+        next(err)
     }
 })
 
-router.get('/authenticated', authenticate, async (req, res) => {
+router.get('/authenticated', authenticate, async (req, res, next) => {
     try {
         const result = await UserQueries.getUserDataByUserId(req.user.id)
         res.json(result);
     } catch (err) {
-        console.log(err)
+        next(err)
     }
 })
 
