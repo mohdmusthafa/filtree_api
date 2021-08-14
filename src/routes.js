@@ -8,7 +8,7 @@ const NumbersQueries = require('./queries/numbers');
 const JWT_SECRET = process.env.JWT_SECRET || 'secret';
 
 const generateAccessToken = (payload) => {
-    return jwt.sign(payload, JWT_SECRET, { expiresIn: 18000 })
+    return jwt.sign(payload, JWT_SECRET, { expiresIn: 432000 })
 }
 
 const authenticate = (req, res, next) => {
